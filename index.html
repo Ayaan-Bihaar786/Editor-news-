@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>कस्टम न्यूज़ इंट्रो एनीमेशन मेकर</title>
+    <title>प्रोफेशनल न्यूज़ इंट्रो मेकर और डाउनलोडर</title>
     <style>
         * {
             box-sizing: border-box;
@@ -19,12 +19,12 @@
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
-            padding: 20px;
+            padding: 15px;
         }
 
         h1 {
-            font-size: 22px;
-            margin-bottom: 20px;
+            font-size: 20px;
+            margin-bottom: 15px;
             color: #38bdf8;
             text-align: center;
         }
@@ -34,11 +34,10 @@
             flex-wrap: wrap;
             gap: 20px;
             width: 100%;
-            max-width: 900px;
+            max-width: 950px;
             justify-content: center;
         }
 
-        /* कंट्रोल पैनल (एडिट करने के लिए) */
         .control-panel {
             flex: 1;
             min-width: 300px;
@@ -49,19 +48,19 @@
         }
 
         .control-group {
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
         .control-group label {
             display: block;
-            font-size: 14px;
-            margin-bottom: 5px;
+            font-size: 13px;
+            margin-bottom: 4px;
             color: #cbd5e1;
         }
 
         .control-group input, .control-group select {
             width: 100%;
-            padding: 10px;
+            padding: 9px;
             background: #0f172a;
             border: 1px solid #475569;
             color: white;
@@ -70,37 +69,35 @@
         }
 
         .control-group input[type="color"] {
-            height: 40px;
+            height: 38px;
             cursor: pointer;
             padding: 2px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
         }
 
         .btn {
             background: #2563eb;
             color: white;
             border: none;
-            padding: 12px;
-            width: 100%;
+            padding: 10px;
+            flex: 1;
             border-radius: 6px;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: bold;
             cursor: pointer;
             transition: 0.2s;
-            margin-top: 10px;
+            text-align: center;
         }
 
-        .btn:hover {
-            background: #1d4ed8;
-        }
+        .btn:hover { opacity: 0.9; }
+        .btn-play { background: #16a34a; }
+        .btn-download { background: #9333ea; }
 
-        .btn-play {
-            background: #16a34a;
-        }
-        .btn-play:hover {
-            background: #15803d;
-        }
-
-        /* प्रीव्यू स्क्रीन (जहाँ एनीमेशन दिखेगा) */
         .preview-container {
             flex: 1;
             min-width: 320px;
@@ -109,9 +106,10 @@
             align-items: center;
         }
 
+        /* स्टेज (जहाँ एनीमेशन दिखेगा) */
         .stage {
             width: 100%;
-            height: 250px;
+            height: 260px;
             background: #000000;
             border: 2px solid #334155;
             border-radius: 12px;
@@ -119,26 +117,51 @@
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            justify-content: flex-end;
+            justify-content: center;
+            align-items: center;
             box-shadow: 0 10px 25px rgba(0,0,0,0.6);
         }
 
-        /* न्यूज़ इंट्रो एनीमेशन लेयर */
+        /* अलग-अलग टेम्पलेट के डिज़ाइन */
         .intro-banner {
-            background: linear-gradient(90deg, #dc2626, #991b1b);
-            color: white;
-            padding: 12px 20px;
+            width: 90%;
+            padding: 12px 18px;
             display: flex;
             align-items: center;
             gap: 15px;
-            transform: translateY(100px);
+            border-radius: 8px;
+            transform: scale(0.8);
             opacity: 0;
-            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s ease;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: absolute;
         }
 
         .intro-banner.animate {
-            transform: translateY(0);
+            transform: scale(1);
             opacity: 1;
+        }
+
+        /* टेम्पलेट 1: ब्रेकिंग न्यूज़ बार */
+        .template-1 {
+            background: linear-gradient(90deg, #dc2626, #7f1d1d);
+            border-left: 6px solid #facc15;
+            bottom: 20px;
+        }
+
+        /* टेम्पलेट 2: स्पेशल रिपोर्ट स्टाइलिश स्ट्रिप */
+        .template-2 {
+            background: linear-gradient(90deg, #2563eb, #1e3a8a);
+            border-radius: 30px;
+            top: 20px;
+        }
+
+        /* टेम्पलेट 3: सेंटर फ्लैश इंट्रो */
+        .template-3 {
+            background: rgba(15, 23, 42, 0.9);
+            border: 2px solid #38bdf8;
+            flex-direction: column;
+            text-align: center;
+            justify-content: center;
         }
 
         .logo-box {
@@ -151,7 +174,6 @@
             align-items: center;
             overflow: hidden;
             flex-shrink: 0;
-            border: 2px solid white;
         }
 
         .logo-box img {
@@ -166,15 +188,13 @@
         }
 
         .main-title {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: bold;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
         }
 
         .sub-title {
-            font-size: 12px;
+            font-size: 11px;
             opacity: 0.9;
         }
 
@@ -188,13 +208,22 @@
 </head>
 <body>
 
-    <h1>🎬 कस्टम न्यूज़ & इंट्रो एनीमेशन क्रिएटर</h1>
+    <h1>🎬 मल्टी-टेम्पलेट न्यूज़ इंट्रो मेकर</h1>
 
     <div class="container">
-        <!-- सेटिंग्स और एडिटिंग पैनल -->
+        <!-- कण्ट्रोल पैनल -->
         <div class="control-panel">
             <div class="control-group">
-                <label>मुख्य टेक्स्ट (Headline / Channel Name):</label>
+                <label>इंट्रो डिज़ाइन (Template चुनें):</label>
+                <select id="templateSelect" onchange="changeTemplate()">
+                    <option value="1">टेम्पलेट 1: ब्रेकिंग न्यूज़ बार (Bottom)</option>
+                    <option value="2">टेम्पलेट 2: स्पेशल रिपोर्ट (Top Curved)</option>
+                    <option value="3">टेम्पलेट 3: बिग सेंट्रल फ्लैश (Center)</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label>मुख्य हेडलाइन (Main Title):</label>
                 <input type="text" id="inputText" value="ब्रेकिंग न्यूज़ इंडिया" oninput="updateText()">
             </div>
 
@@ -204,80 +233,119 @@
             </div>
 
             <div class="control-group">
-                <label>थीम कलर (पसंदीदा रंग चुनें):</label>
+                <label>थीम कलर (Theme Color):</label>
                 <input type="color" id="inputColor" value="#dc2626" onchange="updateColor()">
             </div>
 
             <div class="control-group">
-                <label>अपना लोगो अपलोड करें (Image):</label>
+                <label>अपना लोगो अपलोड करें (Logo):</label>
                 <input type="file" id="inputLogo" accept="image/*" onchange="updateLogo(event)">
             </div>
 
-            <button class="btn btn-play" onclick="playAnimation()">▶ एनीमेशन प्ले करें</button>
+            <div class="btn-group">
+                <button class="btn btn-play" onclick="playAnimation()">▶ प्ले करें</button>
+                <button class="btn btn-download" onclick="downloadIntro()">📥 डाउनलोड / सेव</button>
+            </div>
         </div>
 
-        <!-- लाइव प्रीव्यू स्क्रीन -->
+        <!-- लाइव प्रीव्यू -->
         <div class="preview-container">
             <div class="stage" id="stageBox">
-                <!-- न्यूज़ इंट्रो पट्टी -->
-                <div class="intro-banner" id="introBanner">
-                    <div class="logo-box" id="logoPreview">
-                        <span style="font-size: 10px; color: #000; font-weight: bold;">LOGO</span>
+                <!-- बैनर 1 -->
+                <div class="intro-banner template-1 animate" id="banner1">
+                    <div class="logo-box" id="logoPreview1">
+                        <span style="font-size: 9px; color: #000; font-weight: bold;">LOGO</span>
                     </div>
                     <div class="text-box">
-                        <span class="main-title" id="displayTitle">ब्रेकिंग न्यूज़ इंडिया</span>
-                        <span class="sub-title" id="displaySubText">सबसे तेज़, सबसे सटीक</span>
+                        <span class="main-title" id="displayTitle1">ब्रेकिंग न्यूज़ इंडिया</span>
+                        <span class="sub-title" id="displaySubText1">सबसे तेज़, सबसे सटीक</span>
+                    </div>
+                </div>
+
+                <!-- बैनर 2 (शुरुआत में छुपा रहेगा) -->
+                <div class="intro-banner template-2" id="banner2" style="display:none;">
+                    <div class="logo-box" id="logoPreview2">
+                        <span style="font-size: 9px; color: #000; font-weight: bold;">LOGO</span>
+                    </div>
+                    <div class="text-box">
+                        <span class="main-title" id="displayTitle2">ब्रेकिंग न्यूज़ इंडिया</span>
+                        <span class="sub-title" id="displaySubText2">सबसे तेज़, सबसे सटीक</span>
+                    </div>
+                </div>
+
+                <!-- बैनर 3 (शुरुआत में छुपा रहेगा) -->
+                <div class="intro-banner template-3" id="banner3" style="display:none;">
+                    <div class="logo-box" id="logoPreview3" style="margin-bottom: 5px;">
+                        <span style="font-size: 9px; color: #000; font-weight: bold;">LOGO</span>
+                    </div>
+                    <div class="text-box" style="align-items: center;">
+                        <span class="main-title" id="displayTitle3">ब्रेकिंग न्यूज़ इंडिया</span>
+                        <span class="sub-title" id="displaySubText3">सबसे तेज़, सबसे सटीक</span>
                     </div>
                 </div>
             </div>
-            <p class="hint">आप टेक्स्ट बदल सकते हैं, कलर चुन सकते हैं और लोगो लगा सकते हैं!</p>
+            <p class="hint">अपनी पसंद का डिज़ाइन चुनें, टेक्स्ट भरें और फ्री में इस्तेमाल करें!</p>
         </div>
     </div>
 
     <script>
-        // टेक्स्ट लाइव अपडेट करें
+        let currentTemp = 1;
+
         function updateText() {
             const tText = document.getElementById('inputText').value;
             const sText = document.getElementById('inputSubText').value;
 
-            document.getElementById('displayTitle').innerText = tText || "यहाँ आपका नाम";
-            document.getElementById('displaySubText').innerText = sText || "सब-टाइटल्स";
+            document.getElementById('displayTitle1').innerText = tText;
+            document.getElementById('displaySubText1').innerText = sText;
+            document.getElementById('displayTitle2').innerText = tText;
+            document.getElementById('displaySubText2').innerText = sText;
+            document.getElementById('displayTitle3').innerText = tText;
+            document.getElementById('displaySubText3').innerText = sText;
         }
 
-        // कलर लाइव बदलें
+        function changeTemplate() {
+            currentTemp = document.getElementById('templateSelect').value;
+            
+            document.getElementById('banner1').style.display = 'none';
+            document.getElementById('banner2').style.display = 'none';
+            document.getElementById('banner3').style.display = 'none';
+
+            const activeBanner = document.getElementById(`banner${currentTemp}`);
+            activeBanner.style.display = 'flex';
+            playAnimation();
+        }
+
         function updateColor() {
-            const selectedColor = document.getElementById('inputColor').value;
-            document.getElementById('introBanner').style.background = `linear-gradient(90deg, ${selectedColor}, #111827)`;
+            const color = document.getElementById('inputColor').value;
+            const activeBanner = document.getElementById(`banner${currentTemp}`);
+            if(currentTemp != 3) {
+                activeBanner.style.background = `linear-gradient(90deg, ${color}, #0f172a)`;
+            } else {
+                activeBanner.style.borderColor = color;
+            }
         }
 
-        // लोगो अपलोड करके सेट करें
         function updateLogo(event) {
             const file = event.target.files[0];
             if (file) {
                 const logoURL = URL.createObjectURL(file);
-                const logoBox = document.getElementById('logoPreview');
-                logoBox.innerHTML = `<img src="${logoURL}" alt="Logo">`;
+                ['1', '2', '3'].forEach(id => {
+                    document.getElementById(`logoPreview${id}`).innerHTML = `<img src="${logoURL}" alt="Logo">`;
+                });
             }
         }
 
-        // एनीमेशन ट्रिगर करने का फंक्शन (दोबारा एनिमेट करने के लिए)
         function playAnimation() {
-            const banner = document.getElementById('introBanner');
+            const banner = document.getElementById(`banner${currentTemp}`);
             banner.classList.remove('animate');
-            
-            // छोटा गैप देकर वापस एनीमेशन शुरू करना
             setTimeout(() => {
                 banner.classList.add('animate');
-            }, 100);
+            }, 50);
         }
 
-        // पेज लोड होते ही ऑटोमैटिक एनीमेशन चलना
-        window.onload = function() {
-            setTimeout(() => {
-                document.getElementById('introBanner').classList.add('animate');
-            }, 500);
+        function downloadIntro() {
+            alert("सुझाव: आप इस स्क्रीनशॉट या फोन के स्क्रीन रिकॉर्डर (Screen Recorder) का उपयोग करके इस शानदार इंट्रो को वीडियो फॉर्मेट में आसानी से सेव कर सकते हैं!");
         }
     </script>
 </body>
 </html>
-
