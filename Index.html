@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>कस्टम न्यूज़ इंट्रो एनीमेशन मेकर</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #0b0f19;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 22px;
+            margin-bottom: 20px;
+            color: #38bdf8;
+            text-align: center;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            width: 100%;
+            max-width: 900px;
+            justify-content: center;
+        }
+
+        /* कंट्रोल पैनल (एडिट करने के लिए) */
+        .control-panel {
+            flex: 1;
+            min-width: 300px;
+            background: #1e293b;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        .control-group {
+            margin-bottom: 15px;
+        }
+
+        .control-group label {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 5px;
+            color: #cbd5e1;
+        }
+
+        .control-group input, .control-group select {
+            width: 100%;
+            padding: 10px;
+            background: #0f172a;
+            border: 1px solid #475569;
+            color: white;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .control-group input[type="color"] {
+            height: 40px;
+            cursor: pointer;
+            padding: 2px;
+        }
+
+        .btn {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 12px;
+            width: 100%;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-play {
+            background: #16a34a;
+        }
+        .btn-play:hover {
+            background: #15803d;
+        }
+
+        /* प्रीव्यू स्क्रीन (जहाँ एनीमेशन दिखेगा) */
+        .preview-container {
+            flex: 1;
+            min-width: 320px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .stage {
+            width: 100%;
+            height: 250px;
+            background: #000000;
+            border: 2px solid #334155;
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+        }
+
+        /* न्यूज़ इंट्रो एनीमेशन लेयर */
+        .intro-banner {
+            background: linear-gradient(90deg, #dc2626, #991b1b);
+            color: white;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s ease;
+        }
+
+        .intro-banner.animate {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .logo-box {
+            width: 45px;
+            height: 45px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            flex-shrink: 0;
+            border: 2px solid white;
+        }
+
+        .logo-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .text-box {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .main-title {
+            font-size: 18px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .sub-title {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        .hint {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-top: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🎬 कस्टम न्यूज़ & इंट्रो एनीमेशन क्रिएटर</h1>
+
+    <div class="container">
+        <!-- सेटिंग्स और एडिटिंग पैनल -->
+        <div class="control-panel">
+            <div class="control-group">
+                <label>मुख्य टेक्स्ट (Headline / Channel Name):</label>
+                <input type="text" id="inputText" value="ब्रेकिंग न्यूज़ इंडिया" oninput="updateText()">
+            </div>
+
+            <div class="control-group">
+                <label>सब-टेक्स्ट (Sub-text / Location):</label>
+                <input type="text" id="inputSubText" value="सबसे तेज़, सबसे सटीक" oninput="updateText()">
+            </div>
+
+            <div class="control-group">
+                <label>थीम कलर (पसंदीदा रंग चुनें):</label>
+                <input type="color" id="inputColor" value="#dc2626" onchange="updateColor()">
+            </div>
+
+            <div class="control-group">
+                <label>अपना लोगो अपलोड करें (Image):</label>
+                <input type="file" id="inputLogo" accept="image/*" onchange="updateLogo(event)">
+            </div>
+
+            <button class="btn btn-play" onclick="playAnimation()">▶ एनीमेशन प्ले करें</button>
+        </div>
+
+        <!-- लाइव प्रीव्यू स्क्रीन -->
+        <div class="preview-container">
+            <div class="stage" id="stageBox">
+                <!-- न्यूज़ इंट्रो पट्टी -->
+                <div class="intro-banner" id="introBanner">
+                    <div class="logo-box" id="logoPreview">
+                        <span style="font-size: 10px; color: #000; font-weight: bold;">LOGO</span>
+                    </div>
+                    <div class="text-box">
+                        <span class="main-title" id="displayTitle">ब्रेकिंग न्यूज़ इंडिया</span>
+                        <span class="sub-title" id="displaySubText">सबसे तेज़, सबसे सटीक</span>
+                    </div>
+                </div>
+            </div>
+            <p class="hint">आप टेक्स्ट बदल सकते हैं, कलर चुन सकते हैं और लोगो लगा सकते हैं!</p>
+        </div>
+    </div>
+
+    <script>
+        // टेक्स्ट लाइव अपडेट करें
+        function updateText() {
+            const tText = document.getElementById('inputText').value;
+            const sText = document.getElementById('inputSubText').value;
+
+            document.getElementById('displayTitle').innerText = tText || "यहाँ आपका नाम";
+            document.getElementById('displaySubText').innerText = sText || "सब-टाइटल्स";
+        }
+
+        // कलर लाइव बदलें
+        function updateColor() {
+            const selectedColor = document.getElementById('inputColor').value;
+            document.getElementById('introBanner').style.background = `linear-gradient(90deg, ${selectedColor}, #111827)`;
+        }
+
+        // लोगो अपलोड करके सेट करें
+        function updateLogo(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const logoURL = URL.createObjectURL(file);
+                const logoBox = document.getElementById('logoPreview');
+                logoBox.innerHTML = `<img src="${logoURL}" alt="Logo">`;
+            }
+        }
+
+        // एनीमेशन ट्रिगर करने का फंक्शन (दोबारा एनिमेट करने के लिए)
+        function playAnimation() {
+            const banner = document.getElementById('introBanner');
+            banner.classList.remove('animate');
+            
+            // छोटा गैप देकर वापस एनीमेशन शुरू करना
+            setTimeout(() => {
+                banner.classList.add('animate');
+            }, 100);
+        }
+
+        // पेज लोड होते ही ऑटोमैटिक एनीमेशन चलना
+        window.onload = function() {
+            setTimeout(() => {
+                document.getElementById('introBanner').classList.add('animate');
+            }, 500);
+        }
+    </script>
+</body>
+</html>
+
